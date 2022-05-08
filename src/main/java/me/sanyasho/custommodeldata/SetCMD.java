@@ -34,7 +34,7 @@ public class SetCMD implements CommandExecutor {
 
         if(item.getType() == Material.AIR)
         {
-            cs.sendMessage(ChatColor.RED + "[ОШИБКА] Вы должны держать предет в основной руке.");
+            cs.sendMessage(ChatColor.RED + "[ОШИБКА] Вы должны держать предмет в основной руке.");
             return true;
         }
 
@@ -47,7 +47,7 @@ public class SetCMD implements CommandExecutor {
 	try {
 	    cmddata = Integer.parseInt(args[0]);
 	} catch (NumberFormatException e) {
-	    cs.sendMessage(ChatColor.RED + "[ОШИБКА] Ожидалось числовое значение в аргументе. ("+e+")");
+	    cs.sendMessage(ChatColor.RED + "[ОШИБКА] Ожидалось числовое значение в аргументе. (" + e + ")");
             return true;
 	}
 
