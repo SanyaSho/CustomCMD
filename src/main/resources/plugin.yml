@@ -1,0 +1,11 @@
+name: CustomCMD
+version: 1.0
+authors: [SanyaSho]
+api-version: 1.16
+main: me.sanyasho.custommodeldata.CMDMain
+description: Custom CMD plugin. Special for ProjectT29
+commands:
+    custommodeldata:
+        usage: /<command> [int]
+        description: Set CustomModelData
+        aliases: [cmd, customcmd, ccmd, cusmoddat]
