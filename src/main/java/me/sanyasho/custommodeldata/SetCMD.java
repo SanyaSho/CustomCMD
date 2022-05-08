@@ -16,14 +16,14 @@ public class SetCMD implements CommandExecutor {
 
     Logger log = getLogger();
 
+    private int cmddata;
+
     @Override
     public boolean onCommand(CommandSender cs, Command cmnd, String string, String[] args) {
 
         Player executor = (Player) cs;
         ItemStack item = executor.getInventory().getItemInMainHand();
 	ItemMeta itemmeta = item.getItemMeta();
-	int cmddata = 0;
-        String itemlore = ChatColor.GRAY + "CustomModelData:" + cmddata;
 
         if(!(cs instanceof Player)) {
             cs.sendMessage(ChatColor.RED + "[ОШИБКА] Эта команда может быть использована только в игре.");
@@ -51,6 +51,10 @@ public class SetCMD implements CommandExecutor {
             return true;
 	}
 
+	// lore message
+        String itemlore = ChatColor.GRAY + "CustomModelData:" + cmddata;
+
+	// set custommodeldata
         itemmeta.setCustomModelData(cmddata);
 
         ArrayList<String> lore = new ArrayList<String>();
