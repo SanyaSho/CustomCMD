@@ -63,7 +63,7 @@ public class SetCMD implements CommandExecutor {
 
         item.setItemMeta(itemmeta);
 
-        cs.sendMessage(ChatColor.GREEN + "[УСПЕХ] Значение CusomModelData для " + ChatColor.GRAY + item.getI18NDisplayName() + ChatColor.GREEN + " установлено на: " + ChatColor.GRAY + cmddata);
+        cs.sendMessage(ChatColor.GREEN + "[УСПЕХ] Значение CustomModelData для " + ChatColor.GRAY + item.getI18NDisplayName() + ChatColor.GREEN + " установлено на: " + ChatColor.GRAY + cmddata);
 
         return true;
     }
