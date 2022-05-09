@@ -45,7 +45,15 @@ public class SetCMD implements CommandExecutor {
         }
 
 	try {
-	    cmddata = Integer.parseInt(args[0]);
+	    if(args[0].length() > 9)
+	    {
+		log.info("(" + executor.getName() + ") CMD Data > 9");
+		cs.sendMessage(ChatColor.RED + "[ОШИБКА] Максисально допустимое число не должно превышать длинну в 9 символов.");
+		return true;
+	    }
+	    else
+	    	cmddata = Integer.parseInt(args[0]);
+
 	} catch (NumberFormatException e) {
 	    cs.sendMessage(ChatColor.RED + "[ОШИБКА] Ожидалось числовое значение в аргументе. (" + e + ")");
             return true;
@@ -63,6 +71,7 @@ public class SetCMD implements CommandExecutor {
 
         item.setItemMeta(itemmeta);
 
+	log.info("(" + executor.getName() + ") CMD Data: " + cmddata);
         cs.sendMessage(ChatColor.GREEN + "[УСПЕХ] Значение CustomModelData для " + ChatColor.GRAY + item.getI18NDisplayName() + ChatColor.GREEN + " установлено на: " + ChatColor.GRAY + cmddata);
 
         return true;
