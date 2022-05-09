@@ -1,6 +1,5 @@
 package me.sanyasho.custommodeldata;
 
-import java.util.ArrayList;
 import java.util.logging.Logger;
 import static org.bukkit.Bukkit.getLogger;
 import org.bukkit.ChatColor;
@@ -11,69 +10,106 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import java.io.*;
+import java.util.*;
+import org.bukkit.*;
+import org.bukkit.configuration.file.*;
 
-public class SetCMD implements CommandExecutor {
-
+public class SetCMD implements CommandExecutor
+{
     Logger log = getLogger();
+
+    private CMDMain cmd;
+    public SetCMD(final CMDMain instance) {
+        cmd = instance;
+    }
 
     private int cmddata;
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmnd, String string, String[] args) {
 
-        if(!(cs instanceof Player)) {
-            cs.sendMessage(ChatColor.RED + "[ОШИБКА] Эта команда может быть использована только в игре.");
+	// check for permission
+	if(cmd.getConfig().getBoolean("plugin.require-cmd-command-permission"))
+	{
+	    if(!cs.hasPermission("cmd.use"))
+	    {
+		cs.sendMessage(ChatColor.RED + "[ОШИБКА] Недостаточно прав на выполнение этой команды.");
+		return true;
+	    }
+	}
+
+	// check sender instance
+        if(!(cs instanceof Player))
+	{
+	    cs.sendMessage(ChatColor.RED + "[ОШИБКА] Эта команда может быть использована только в игре.");
             return true;
         }
 
+	// prepare variables
         Player executor = (Player) cs;
-        ItemStack item = executor.getInventory().getItemInMainHand();
+        String username = executor.getName();
+	ItemStack item = executor.getInventory().getItemInMainHand();
 	ItemMeta itemmeta = item.getItemMeta();
 
-        log.info("(" + executor.getName() +") Selected item: " + item.getI18NDisplayName());
-
+	// check item type
         if(item.getType() == Material.AIR)
         {
             cs.sendMessage(ChatColor.RED + "[ОШИБКА] Вы должны держать предмет в основной руке.");
             return true;
         }
+	else
+	{
+	    log.info("(" + username +") Selected item: " + item.getI18NDisplayName());
+	}
 
+	// error if length of args is 0
         if(args.length == 0)
         {
             cs.sendMessage(ChatColor.RED + "[ОШИБКА] Пропущено значение CustomModelData.");
             return true;
         }
 
-	try {
+	// error if length or args > 1
+	if(args.length > 1)
+	{
+	    cs.sendMessage(ChatColor.RED + "[ОШИБКА] Использование: /custommodeldata [int]");
+	    return true;
+	}
+
+	// try to parse integer from args[0]
+	try
+	{
 	    if(args[0].length() > 9)
 	    {
-		log.info("(" + executor.getName() + ") CMD Data > 9");
-		cs.sendMessage(ChatColor.RED + "[ОШИБКА] Максисально допустимое число не должно превышать длинну в 9 символов.");
+		log.info("(" + username + ") CMD Data: > 9");
+		cs.sendMessage(ChatColor.RED + "[ОШИБКА] Максисально допустимое количество цифт не больше 9. Вы ввели " + args[0].length() + "цифр.");
 		return true;
 	    }
 	    else
+	    {
 	    	cmddata = Integer.parseInt(args[0]);
-
-	} catch (NumberFormatException e) {
+	    }
+	}
+	catch (NumberFormatException e)
+	{
 	    cs.sendMessage(ChatColor.RED + "[ОШИБКА] Ожидалось числовое значение в аргументе. (" + e + ")");
             return true;
 	}
 
-	// lore message
-        String itemlore = ChatColor.GRAY + "CustomModelData:" + cmddata;
-
 	// set custommodeldata
         itemmeta.setCustomModelData(cmddata);
 
+	// add lore to item
         ArrayList<String> lore = new ArrayList<String>();
-        lore.add(itemlore);
+        lore.add(ChatColor.GRAY + "CustomModelData:" + cmddata);
         itemmeta.setLore(lore);
 
+	// set itemmeta for selected item
         item.setItemMeta(itemmeta);
 
-	log.info("(" + executor.getName() + ") CMD Data: " + cmddata);
+	log.info("(" + username + ") CMD Data: " + cmddata);
         cs.sendMessage(ChatColor.GREEN + "[УСПЕХ] Значение CustomModelData для " + ChatColor.GRAY + item.getI18NDisplayName() + ChatColor.GREEN + " установлено на: " + ChatColor.GRAY + cmddata);
-
         return true;
     }
 }

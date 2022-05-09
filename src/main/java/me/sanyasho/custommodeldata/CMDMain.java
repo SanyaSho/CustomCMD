@@ -8,50 +8,56 @@ import java.util.concurrent.*;
 import org.bukkit.Bukkit;
 import java.util.HashMap;
 import java.util.Map;
+import org.bukkit.configuration.file.*;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import java.io.*;
 
 public class CMDMain extends JavaPlugin {
 
     Logger log = getLogger();
 
+    public static FileConfiguration config;
+    File cfgfile;
+
     @Override
     public void onEnable() {
-        log.info(ChatColor.GREEN + "Запуск");
-
 	int ID = 15155;
 	Metrics metrics = new Metrics(this, ID);
 
-	// player count char
-	metrics.addCustomChart(new Metrics.SingleLineChart("players", new Callable<Integer>() {
-            @Override
-            public Integer call() throws Exception {
-                return Bukkit.getOnlinePlayers().size();
-            }
-        }));
+        config = getConfig();
+	config.options().copyDefaults(true);
+	saveConfig();
+	cfgfile = new File(getDataFolder(), "config.yml");
 
-	// used java version char
-	metrics.addCustomChart(new Metrics.DrilldownPie("java_version", () -> {
-        Map<String, Map<String, Integer>> map = new HashMap<>();
-        String javaVersion = System.getProperty("java.version");
-        Map<String, Integer> entry = new HashMap<>();
-        entry.put(javaVersion, 1);
-            map.put(javaVersion, entry);
-            return map;
-        }));
+	log.info("Require permission: " + getConfig().getString("plugin.require-cmd-command-permission"));
 
-        PluginCommand cmd = getCommand("custommodeldata");
-        cmd.setExecutor(new SetCMD());
+        getCommand("custommodeldata").setExecutor(new SetCMD(this));
     }
 
     @Override
-    public void onLoad() {
-        log.info(ChatColor.GREEN + "Загрузка");
-        
+    public void onDisable()
+    {
     }
-    
-    @Override
-    public void onDisable() {
-        log.info(ChatColor.RED + "Выключение");
-        
+
+    // config reload command
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args)
+    {
+	if(!cs.hasPermission("cmd.reload"))
+	{
+	    cs.sendMessage(ChatColor.RED + "[ОШИБКА] Недостаточно прав на выполнение этой команды.");
+	    return true;
+	}
+
+	if(cmd.getName().equalsIgnoreCase("cmdreload"))
+	{
+	    config = YamlConfiguration.loadConfiguration(cfgfile);
+	    cs.sendMessage("[" + ChatColor.GOLD + "CustomCMD" + ChatColor.RESET + "] " + ChatColor.GREEN + "Reload complete");
+	    return true;
+	}
+
+	return true;
     }
-    
+
 }

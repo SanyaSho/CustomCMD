@@ -1,0 +1,2 @@
+plugin:
+  require-cmd-command-permission: false
