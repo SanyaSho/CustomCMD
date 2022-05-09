@@ -21,14 +21,14 @@ public class SetCMD implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmnd, String string, String[] args) {
 
-        Player executor = (Player) cs;
-        ItemStack item = executor.getInventory().getItemInMainHand();
-	ItemMeta itemmeta = item.getItemMeta();
-
         if(!(cs instanceof Player)) {
             cs.sendMessage(ChatColor.RED + "[ОШИБКА] Эта команда может быть использована только в игре.");
             return true;
         }
+
+        Player executor = (Player) cs;
+        ItemStack item = executor.getInventory().getItemInMainHand();
+	ItemMeta itemmeta = item.getItemMeta();
 
         log.info("(" + executor.getName() +") Selected item: " + item.getI18NDisplayName());
 
