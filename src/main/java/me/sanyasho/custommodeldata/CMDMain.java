@@ -15,6 +15,9 @@ public class CMDMain extends JavaPlugin {
     public static FileConfiguration config;
     File cfgfile;
 
+    public static boolean addlore;
+    public static boolean needperm;
+
     @Override
     public void onEnable() {
 	Metrics metrics = new Metrics(this, 15155);
@@ -26,6 +29,8 @@ public class CMDMain extends JavaPlugin {
 
 	log.info("Require permission: " + getConfig().getBoolean("plugin.require-cmd-command-permission"));
         log.info("Add Lore to item: " + getConfig().getBoolean("plugin.add-item-lore"));
+	needperm = getConfig().getBoolean("plugin.require-cmd-command-permission");
+	addlore = getConfig().getBoolean("plugin.add-item-lore");
 
         getCommand("custommodeldata").setExecutor(new SetCMD(this));
     }
@@ -41,13 +46,15 @@ public class CMDMain extends JavaPlugin {
     {
 	if(!cs.hasPermission("cmd.reload"))
 	{
-	    cs.sendMessage(ChatColor.RED + "[ОШИБКА] Недостаточно прав на выполнение этой команды");
+	    cs.sendMessage(ChatColor.RED + "[ОШИБКА] Недостаточно прав на выполнение этой команды.");
 	    return true;
 	}
 
 	if(cmd.getName().equalsIgnoreCase("cmdreload"))
 	{
 	    config = YamlConfiguration.loadConfiguration(cfgfile);
+	    needperm = config.getBoolean("plugin.require-cmd-command-permission");
+	    addlore = config.getBoolean("plugin.add-item-lore");
 	    cs.sendMessage(ChatColor.GREEN + "Конфигурация перезагружена");
 	    return true;
 	}

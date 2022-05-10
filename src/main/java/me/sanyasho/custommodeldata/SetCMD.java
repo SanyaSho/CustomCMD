@@ -28,7 +28,7 @@ public class SetCMD implements CommandExecutor
     public boolean onCommand(CommandSender cs, Command cmnd, String string, String[] args)
     {
 	// check for permission
-	if(cmd.getConfig().getBoolean("plugin.require-cmd-command-permission"))
+	if(CMDMain.needperm)
 	{
 	    if(!cs.hasPermission("cmd.use"))
 	    {
@@ -81,7 +81,7 @@ public class SetCMD implements CommandExecutor
 	    if(args[0].length() > 9)
 	    {
 		log.info("(" + username + ") CMD Data: > 9");
-		cs.sendMessage(ChatColor.RED + "[ОШИБКА] Максисально допустимое количество цифт не больше 9. Вы ввели " + args[0].length() + "цифр."); 
+		cs.sendMessage(ChatColor.RED + "[ОШИБКА] Максисально можно ввести только 9 цифр. Вы ввели " + args[0].length() + "цифр."); 
 	    }
 	    else
 	    {
@@ -101,7 +101,7 @@ public class SetCMD implements CommandExecutor
         ArrayList<String> lore = new ArrayList<String>();
         lore.add(ChatColor.GRAY + "CustomModelData:" + cmddata);
 
-        if(cmd.getConfig().getBoolean("plugin.add-item-lore"))
+        if(CMDMain.addlore)
         {
             itemmeta.setLore(lore);
         }
