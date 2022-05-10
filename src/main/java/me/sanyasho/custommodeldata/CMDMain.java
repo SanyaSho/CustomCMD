@@ -32,6 +32,20 @@ public class CMDMain extends JavaPlugin {
 	needperm = getConfig().getBoolean("plugin.require-cmd-command-permission");
 	addlore = getConfig().getBoolean("plugin.add-item-lore");
 
+	metrics.addCustomChart(new Metrics.SimplePie("use_command_permission", () -> {
+	    if(needperm)
+		return "yes";
+	    else
+		return "no";
+        }));
+
+	metrics.addCustomChart(new Metrics.SimplePie("add_item_lore", () -> {
+	    if(addlore)
+		return "yes";
+	    else
+		return "no";
+        }));
+
         getCommand("custommodeldata").setExecutor(new SetCMD(this));
     }
 
