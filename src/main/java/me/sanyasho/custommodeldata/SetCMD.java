@@ -81,7 +81,8 @@ public class SetCMD implements CommandExecutor
 	    if(args[0].length() > 9)
 	    {
 		log.info("(" + username + ") CMD Data: > 9");
-		cs.sendMessage(ChatColor.RED + "[ОШИБКА] Максисально можно ввести только 9 цифр. Вы ввели " + args[0].length() + "цифр."); 
+		cs.sendMessage(ChatColor.RED + "[ОШИБКА] Максисально можно ввести только 9 цифр. Вы ввели " + args[0].length() + " цифр."); 
+		return true;
 	    }
 	    else
 	    {

@@ -34,16 +34,16 @@ public class CMDMain extends JavaPlugin {
 
 	metrics.addCustomChart(new Metrics.SimplePie("use_command_permission", () -> {
 	    if(needperm)
-		return "yes";
+		return "true";
 	    else
-		return "no";
+		return "false";
         }));
 
 	metrics.addCustomChart(new Metrics.SimplePie("add_item_lore", () -> {
 	    if(addlore)
-		return "yes";
+		return "true";
 	    else
-		return "no";
+		return "false";
         }));
 
         getCommand("custommodeldata").setExecutor(new SetCMD(this));
