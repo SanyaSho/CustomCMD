@@ -1,2 +1,3 @@
 plugin:
   require-cmd-command-permission: false
+  add-item-lore: true

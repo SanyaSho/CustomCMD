@@ -10,10 +10,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import java.io.*;
 import java.util.*;
-import org.bukkit.*;
-import org.bukkit.configuration.file.*;
+import me.sanyasho.custommodeldata.CMDMain;
 
 public class SetCMD implements CommandExecutor
 {
@@ -27,15 +25,15 @@ public class SetCMD implements CommandExecutor
     private int cmddata;
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmnd, String string, String[] args) {
-
+    public boolean onCommand(CommandSender cs, Command cmnd, String string, String[] args)
+    {
 	// check for permission
 	if(cmd.getConfig().getBoolean("plugin.require-cmd-command-permission"))
 	{
 	    if(!cs.hasPermission("cmd.use"))
 	    {
 		cs.sendMessage(ChatColor.RED + "[ОШИБКА] Недостаточно прав на выполнение этой команды.");
-		return true;
+                return true;
 	    }
 	}
 
@@ -74,7 +72,7 @@ public class SetCMD implements CommandExecutor
 	if(args.length > 1)
 	{
 	    cs.sendMessage(ChatColor.RED + "[ОШИБКА] Использование: /custommodeldata [int]");
-	    return true;
+            return true;
 	}
 
 	// try to parse integer from args[0]
@@ -83,8 +81,7 @@ public class SetCMD implements CommandExecutor
 	    if(args[0].length() > 9)
 	    {
 		log.info("(" + username + ") CMD Data: > 9");
-		cs.sendMessage(ChatColor.RED + "[ОШИБКА] Максисально допустимое количество цифт не больше 9. Вы ввели " + args[0].length() + "цифр.");
-		return true;
+		cs.sendMessage(ChatColor.RED + "[ОШИБКА] Максисально допустимое количество цифт не больше 9. Вы ввели " + args[0].length() + "цифр."); 
 	    }
 	    else
 	    {
@@ -103,7 +100,11 @@ public class SetCMD implements CommandExecutor
 	// add lore to item
         ArrayList<String> lore = new ArrayList<String>();
         lore.add(ChatColor.GRAY + "CustomModelData:" + cmddata);
-        itemmeta.setLore(lore);
+
+        if(cmd.getConfig().getBoolean("plugin.add-item-lore"))
+        {
+            itemmeta.setLore(lore);
+        }
 
 	// set itemmeta for selected item
         item.setItemMeta(itemmeta);
