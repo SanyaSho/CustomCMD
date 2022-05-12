@@ -1,7 +1,10 @@
+# Building
 build:
 mvn package
 
-commands:
-/cmd [int] - adds CustomModelData to item.
+# Commands
+/cmd [int] - add CustomModelData to item
+/cmdreload - reload config.yml
 
+# Credits
 by SanyaSho, special for ProjectT29

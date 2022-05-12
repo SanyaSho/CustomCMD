@@ -27,11 +27,8 @@ public class CMDMain extends JavaPlugin {
 	saveConfig();
 	cfgfile = new File(getDataFolder(), "config.yml");
 
-	log.info("Require permission: " + getConfig().getBoolean("plugin.require-cmd-command-permission"));
-        log.info("Add Lore to item: " + getConfig().getBoolean("plugin.add-item-lore"));
-	needperm = getConfig().getBoolean("plugin.require-cmd-command-permission");
-	addlore = getConfig().getBoolean("plugin.add-item-lore");
-
+        setVars();
+	
 	metrics.addCustomChart(new Metrics.SimplePie("use_command_permission", () -> {
 	    if(needperm)
 		return "true";
@@ -50,10 +47,24 @@ public class CMDMain extends JavaPlugin {
     }
 
     @Override
+    public void onLoad()
+    {
+        setVars();
+    }
+    
+    @Override
     public void onDisable()
     {
     }
 
+    public void setVars()
+    {
+        needperm = getConfig().getBoolean("plugin.require-cmd-command-permission");
+	addlore = getConfig().getBoolean("plugin.add-item-lore");
+	log.info("Require permission: " + needperm);
+        log.info("Add Lore to item: " + addlore);
+    }
+    
     // config reload command
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args)
